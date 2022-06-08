@@ -31,15 +31,36 @@ def rule_checker(matrix: np.array) -> tuple:
     for row in range(len(matrix)):
         for i in range(1, len(matrix)-1):
             if matrix[row,i-1] == matrix[row,i] == matrix[row,i+1]:
-                return 0, "More then 2 consecutive values in a row"
+                return 3, "More then 2 consecutive values in a row"
     
     for column in range(len(matrix)):
         for i in range(1, len(matrix)-1):
             if matrix.T[column,i-1] == matrix.T[column,i] == matrix.T[column,i+1]:
-                return 0, "More then 2 consecutive values in a row"
+                return 4, "More then 2 consecutive values in a row"
 
     # * Third rule is that there must be an equal amount of both values in a row an column.
-    
+    for row in matrix:
+        c0 = 0
+        c1 = 0
+        for cell in row:
+            if cell == 0:
+                c0 += 1
+            elif cell == 1:
+                c1 += 1
+        if c0 > len(row)/2 or c1 > len(row)/2:
+            return 5, "Rows are unbalanced"
+
+    for column in matrix.T:
+        c0 = 0
+        c1 = 0
+        for cell in column:
+            if cell == 0:
+                c0 += 1
+            elif cell == 1:
+                c1 += 1
+        if c0 > len(column)/2 or c1 > len(column)/2:
+            return 6, "column are unbalanced"
+
 
     # * if nothing is trigerd then it would mean all rules are followed and the matrix would be complete
     return 0, "No conflicting rules"
@@ -58,5 +79,5 @@ if __name__ == '__main__' :
 
     m4 = generate_matrix(4)
     # print(m4)
-    print(m4)
-    # bruteforce(m4)
+    # print(m4)
+    bruteforce(m4)

@@ -25,6 +25,19 @@ def rule_checker(matrix: np.array) -> tuple:
         tuple: Returns a tuple of a error code and a message to tell what rule is conflicting
     """
     # * First rule is that ther are now duplicate rows or columns allowed.
+    for row in range(len(matrix)):
+        Tb = matrix == matrix[row,:]
+        Tb = Tb.all(1)
+        Tb = np.delete(Tb, row)
+        if True in Tb:
+            return 1, "Rows are not unique"
+
+    for column in range(len(matrix)):
+        Tb = matrix.T == matrix.T[column,:]
+        Tb = Tb.all(1)
+        Tb = np.delete(Tb, column)
+        if True in Tb:
+            return 2, "Columns are not unique"
 
     # * Second rule is that no more then 2 of the same value's are allowed next to each other.
     # First we go through Rows then we go through the columns

@@ -2,12 +2,23 @@ import numpy as np
 import itertools as it
 
 def generate_matrix(size: int) -> np.array:
+    """Generate a randomly filed  matrix of the given size
+    Matrix will always be a square
+    Args:
+        size (int): Size of the wanted matrix e.g. 6 (6x6)
+
+    Returns:
+        np.array: returns a 2d numpy array wich acts as the matrix.
+    """
     while 1:
+        # generate a matrix of the given size
         shape = size, size
         matrix = np.random.randint(1000, 9999, size=shape)
+        # set the pre-set vallues amount, in this case its 20% of the matrix rounded down.
         rnd_amount = int(np.floor((len(matrix)**2)*.2))
 
         for i in range(rnd_amount):
+            # randomly place a 1 or 0 in the matrix
             row = np.random.randint(0, len(matrix))
             column = np.random.randint(0, len(matrix.T))
             matrix[row,column] = np.random.randint(0, 2)
@@ -40,7 +51,6 @@ def rule_checker(matrix: np.array) -> tuple:
             return 2, "Columns are not unique"
 
     # * Second rule is that no more then 2 of the same value's are allowed next to each other.
-    # First we go through Rows then we go through the columns
     for row in range(len(matrix)):
         for i in range(1, len(matrix)-1):
             if matrix[row,i-1] == matrix[row,i] == matrix[row,i+1]:
@@ -74,11 +84,17 @@ def rule_checker(matrix: np.array) -> tuple:
         if c0 > len(column)/2 or c1 > len(column)/2:
             return 6, "column are unbalanced"
 
-
+    # * if nothing is triggered then it would mean all rules are followed.
     # * if nothing is trigerd then it would mean all rules are followed and the matrix would be complete
     return 0, "No conflicting rules"
 
-def bruteforce(matrix: np.array):
+def bruteforce(matrix: np.array) -> None:
+    """Generates all possible matrices that follow the rules in the given matrix shape.
+    Note 4x4 is easily doable but if you go to 6x6 then it will take a long time.
+
+    Args:
+        matrix (np.array): a matrix to get the wanted shape from.
+    """
     size = len(matrix), len(matrix)
     prod = list(it.product(range(2), repeat=size[1]**2))
 

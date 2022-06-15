@@ -34,24 +34,32 @@ class TestMatrixEditing(unittest.TestCase):
     def test_editMatrix(self):
         pos = row, column = 2, 2
         newVal = 0
-        self.assertEqual(main.editGrid(self.mpak, pos, newVal)[0][pos], newVal)
+        result = main.editGrid(self.mpak, pos, newVal)
+        self.assertEqual(result[0][pos], newVal)
+        self.assertEqual(result[1], "Value changed correctly")
     
     def test_reassignVal(self):
         pos = row, column = 2, 2
         newVal = 1
-        self.assertEqual(main.editGrid(self.mpak, pos, newVal)[0][pos], newVal)
+        result = main.editGrid(self.mpak, pos, newVal)
+        self.assertEqual(result[0][pos], newVal)
+        self.assertEqual(result[1], "Value changed correctly")
     
     def test_NoneEditable(self):
         pos = row, column = 0, 1
         currentVal = self.matrix[pos]
         newVal = 0
-        self.assertEqual(main.editGrid(self.mpak, pos, newVal)[0][pos], currentVal)
+        result = main.editGrid(self.mpak, pos, newVal)
+        self.assertEqual(result[0][pos], currentVal)
+        self.assertEqual(result[1], "Cell has a immutable value")
     
-    def test_incorrectEdit(self):
+    def test_incorrectValue(self):
         pos = row, column = 1, 2
         currentVal = self.matrix[pos]
         newVal = 4885
-        self.assertEqual(main.editGrid(self.mpak, pos, newVal)[0][pos], currentVal)
+        result = main.editGrid(self.mpak, pos, newVal)
+        self.assertEqual(result[0][pos], currentVal)
+        self.assertEqual(result[1], "Incorrect input value")
 
 if __name__ == '__main__' :
     unittest.main(verbosity=0)

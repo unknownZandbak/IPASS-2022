@@ -16,15 +16,19 @@ def generate_matrix(size: int) -> np.array:
         matrix = np.random.randint(1000, 9999, size=shape)
         # set the pre-set vallues amount, in this case its 20% of the matrix rounded down.
         rnd_amount = int(np.floor((len(matrix)**2)*.2))
-
+        # A list of permanent value positions that are not allowed to be changed 
+        permlist = []
+        
         for i in range(rnd_amount):
             # randomly place a 1 or 0 in the matrix
             row = np.random.randint(0, len(matrix))
             column = np.random.randint(0, len(matrix.T))
             matrix[row,column] = np.random.randint(0, 2)
-                
+            # add a permanent value position to the list
+            permlist.append((row, column))    
+
         if rule_checker(matrix)[0] == 0:
-            return matrix
+            return matrix, permlist
 
 def rule_checker(matrix: np.array) -> tuple:
     """Check for any conflicting rules for the given matrix.
@@ -85,7 +89,6 @@ def rule_checker(matrix: np.array) -> tuple:
             return 6, "column are unbalanced"
 
     # * if nothing is triggered then it would mean all rules are followed.
-    # * if nothing is trigerd then it would mean all rules are followed and the matrix would be complete
     return 0, "No conflicting rules"
 
 def bruteforce(matrix: np.array) -> None:
@@ -99,14 +102,38 @@ def bruteforce(matrix: np.array) -> None:
     prod = list(it.product(range(2), repeat=size[1]**2))
 
     for i in range(len(prod)):
-        matrix = np.matrix(np.asarray(prod[i]).reshape((size)))
+        matrix = np.asarray(np.asarray(prod[i]).reshape((size)))
 
         if rule_checker(matrix)[0] == 0:
             print(f"======\nmatch found:\n{matrix}\n")
 
+def editGrid(matrixpak, pos=None, newVal=None) -> np.array:
+    if pos == None:
+        r = int(input("Select Row: "))
+        c = int(input("Select Column: "))
+        pos = r, c
+    
+    if newVal == None:
+        newVal = int(input("New Value: "))
+
+    matrix, permList = matrixpak
+    if newVal != 1 or newVal != 0:
+        return matrix, "Incorrect input value"
+    else:
+        if pos in permList:
+            return matrix, "Cel has a immutable value"
+        
+        matrix[pos] = newVal
+        # Verify that the value has correctly changed
+        if matrix[pos] != newVal:
+            return matrix, "Somthing went wrong when changing the value"
+
+        return matrix, "Value changed correctly"
+
 if __name__ == '__main__' :
 
-    m4 = generate_matrix(4)
-    # print(m4)
-    # print(m4)
-    bruteforce(m4)
+    m4pak = matrix, permList = generate_matrix(4)
+    print(matrix)
+    m4pak[0] = editGrid(m4pak)
+    print()
+    

@@ -28,7 +28,7 @@ def generate_matrix(size: int) -> np.array:
             permlist.append((row, column))    
 
         if rule_checker(matrix)[0] == 0:
-            return matrix, permlist
+            return [matrix, permlist]
 
 def rule_checker(matrix: np.array) -> tuple:
     """Check for any conflicting rules for the given matrix.
@@ -109,7 +109,7 @@ def bruteforce(matrix: np.array) -> None:
 
 def editGrid(matrixpak, pos=None, newVal=None) -> np.array:
     if pos == None:
-        r = int(input("Select Row: "))
+        r = int(input("\nSelect Row: "))
         c = int(input("Select Column: "))
         pos = r, c
     
@@ -117,11 +117,12 @@ def editGrid(matrixpak, pos=None, newVal=None) -> np.array:
         newVal = int(input("New Value: "))
 
     matrix, permList = matrixpak
-    if newVal != 1 or newVal != 0:
+    if newVal != 1 and newVal != 0:
         return matrix, "Incorrect input value"
     else:
+        # check if the given position is imutable
         if pos in permList:
-            return matrix, "Cel has a immutable value"
+            return matrix, "Cell has a immutable value"
         
         matrix[pos] = newVal
         # Verify that the value has correctly changed
@@ -132,8 +133,9 @@ def editGrid(matrixpak, pos=None, newVal=None) -> np.array:
 
 if __name__ == '__main__' :
 
-    m4pak = matrix, permList = generate_matrix(4)
-    print(matrix)
-    m4pak[0] = editGrid(m4pak)
-    print()
+    m4pak = generate_matrix(4)
+    print(m4pak[0])
+    m4pak[0], message = editGrid(m4pak)
+    print(f"\nResult: {message}\n")
+    print(m4pak[0])
     

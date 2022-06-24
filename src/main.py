@@ -1,21 +1,23 @@
 import numpy as np
 import itertools as it
 
-def generate_matrix(size: int) -> np.array:
+def generate_matrix(size: int) -> list:
     """Generate a randomly filed  matrix of the given size
     Matrix will always be a square
     Args:
         size (int): Size of the wanted matrix e.g. 6 (6x6)
 
     Returns:
-        np.array: returns a 2d numpy array wich acts as the matrix.
+        list: returns a 2d numpy array wich acts as the matrix, and a accompanying list of imutable cell positions.
     """
     while 1:
         # generate a matrix of the given size
         shape = size, size
-        matrix = np.random.randint(1000, 9999, size=shape)
+        matrix = np.empty(shape)
+        matrix[:] = np.nan
+        # matrix = np.random.randint(1000, 9999, size=shape)
         # set the pre-set vallues amount, in this case its 20% of the matrix rounded down.
-        rnd_amount = int(np.floor((len(matrix)**2)*.2))
+        rnd_amount = int(np.floor((len(matrix)**2)*.3))
         # A list of permanent value positions that are not allowed to be changed 
         permlist = []
         
@@ -39,31 +41,32 @@ def rule_checker(matrix: np.array) -> tuple:
     Returns:
         tuple: Returns a tuple of a error code and a message to tell what rule is conflicting
     """
-    # * First rule is that ther are now duplicate rows or columns allowed.
+
+    # * First rule is that no more then 2 of the same value's are allowed next to each other.
+    for row in range(len(matrix)):
+        for i in range(1, len(matrix)-1):
+            if matrix[row,i-1] == matrix[row,i] == matrix[row,i+1]:
+                return 1, "More then 2 consecutive values in a row"
+    
+    for column in range(len(matrix)):
+        for i in range(1, len(matrix)-1):
+            if matrix.T[column,i-1] == matrix.T[column,i] == matrix.T[column,i+1]:
+                return 2, "More then 2 consecutive values in a column"
+
+    # * Second rule is that ther are now duplicate rows or columns allowed.
     for row in range(len(matrix)):
         Tb = matrix == matrix[row,:]
         Tb = Tb.all(1)
         Tb = np.delete(Tb, row)
         if True in Tb:
-            return 1, "Rows are not unique"
+            return 3, "Rows are not unique"
 
     for column in range(len(matrix)):
         Tb = matrix.T == matrix.T[column,:]
         Tb = Tb.all(1)
         Tb = np.delete(Tb, column)
         if True in Tb:
-            return 2, "Columns are not unique"
-
-    # * Second rule is that no more then 2 of the same value's are allowed next to each other.
-    for row in range(len(matrix)):
-        for i in range(1, len(matrix)-1):
-            if matrix[row,i-1] == matrix[row,i] == matrix[row,i+1]:
-                return 3, "More then 2 consecutive values in a row"
-    
-    for column in range(len(matrix)):
-        for i in range(1, len(matrix)-1):
-            if matrix.T[column,i-1] == matrix.T[column,i] == matrix.T[column,i+1]:
-                return 4, "More then 2 consecutive values in a row"
+            return 4, "Columns are not unique"
 
     # * Third rule is that there must be an equal amount of both values in a row an column.
     for row in matrix:
@@ -130,6 +133,18 @@ def editGrid(matrixpak, pos=None, newVal=None) -> np.array:
             return matrix, "Somthing went wrong when changing the value"
 
         return matrix, "Value changed correctly"
+
+def Constraint_propagations(matrix: np.array) -> np.array:
+    changes = 1
+    while changes:
+        changes = 0
+
+        # Constraint 1
+        for row in range(len(matrix)):
+            for i in range(len(matrix)):
+                pass
+
+
 
 if __name__ == '__main__' :
 

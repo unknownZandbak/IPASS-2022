@@ -13,9 +13,9 @@ def generate_matrix(size: int) -> list:
     while 1:
         # generate a matrix of the given size
         shape = size, size
-        matrix = np.empty(shape)
-        matrix[:] = np.nan
-        # matrix = np.random.randint(1000, 9999, size=shape)
+        # matrix = np.empty(shape)
+        # matrix[:] = np.nan
+        matrix = np.random.randint(1000, 9999, size=shape)
         # set the pre-set vallues amount, in this case its 20% of the matrix rounded down.
         rnd_amount = int(np.floor((len(matrix)**2)*.3))
         # A list of permanent value positions that are not allowed to be changed 
@@ -141,16 +141,21 @@ def Constraint_propagations(matrix: np.array) -> np.array:
 
         # Constraint 1
         for row in range(len(matrix)):
-            for i in range(len(matrix)):
-                pass
-
+            for i in range(0, len(matrix)-1):
+                if (matrix[row,i-1] != 1 and matrix[row,i-1] != 0) or (matrix[row,i] != 1 and matrix[row,i] != 0) or (matrix[row,i+1] != 1 and matrix[row,i+1] != 0):
+                    # Fill Row
+                    pass
+                if (matrix.T[row,i-1] != 1 and matrix.T[row,i-1] != 0) or (matrix.T[row,i] != 1 and matrix.T[row,i] != 0) or (matrix.T[row,i+1] != 1 and matrix.T[row,i+1] != 0):
+                    # Fill Column
+                    pass
 
 
 if __name__ == '__main__' :
 
-    m4pak = generate_matrix(4)
-    print(m4pak[0])
-    m4pak[0], message = editGrid(m4pak)
-    print(f"\nResult: {message}\n")
-    print(m4pak[0])
+    mpak = generate_matrix(4)
+    
+    mpak[0], message = Constraint_propagations(mpak[0])
+
+    print(mpak[0])
+
     

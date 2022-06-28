@@ -53,22 +53,7 @@ def rule_checker(matrix: np.array) -> tuple:
             if matrix.T[column,i-1] == matrix.T[column,i] == matrix.T[column,i+1]:
                 return 2, "More then 2 consecutive values in a column"
 
-    # * Second rule is that ther are now duplicate rows or columns allowed.
-    for row in range(len(matrix)):
-        Tb = matrix == matrix[row,:]
-        Tb = Tb.all(1)
-        Tb = np.delete(Tb, row)
-        if True in Tb:
-            return 3, "Rows are not unique"
-
-    for column in range(len(matrix)):
-        Tb = matrix.T == matrix.T[column,:]
-        Tb = Tb.all(1)
-        Tb = np.delete(Tb, column)
-        if True in Tb:
-            return 4, "Columns are not unique"
-
-    # * Third rule is that there must be an equal amount of both values in a row an column.
+    # * Second rule is that there must be an equal amount of both values in a row an column.
     for row in matrix:
         c0 = 0
         c1 = 0
@@ -78,7 +63,7 @@ def rule_checker(matrix: np.array) -> tuple:
             elif cell == 1:
                 c1 += 1
         if c0 > len(row)/2 or c1 > len(row)/2:
-            return 5, "Rows are unbalanced"
+            return 3, "Rows are unbalanced"
 
     for column in matrix.T:
         c0 = 0
@@ -89,7 +74,22 @@ def rule_checker(matrix: np.array) -> tuple:
             elif cell == 1:
                 c1 += 1
         if c0 > len(column)/2 or c1 > len(column)/2:
-            return 6, "column are unbalanced"
+            return 4, "column are unbalanced"
+
+    # * Third rule is that ther are now duplicate rows or columns allowed.
+    for row in range(len(matrix)):
+        Tb = matrix == matrix[row,:]
+        Tb = Tb.all(1)
+        Tb = np.delete(Tb, row)
+        if True in Tb:
+            return 5, "Rows are not unique"
+
+    for column in range(len(matrix)):
+        Tb = matrix.T == matrix.T[column,:]
+        Tb = Tb.all(1)
+        Tb = np.delete(Tb, column)
+        if True in Tb:
+            return 6, "Columns are not unique"
 
     # * if nothing is triggered then it would mean all rules are followed.
     return 0, "No conflicting rules"
@@ -183,6 +183,8 @@ def Constraint_propagations(matrix_pak: np.array) -> np.array:
                     changes = 1
 
         # Constraint 2
+
+        # Constraint 3
 
     return matrix, permList
 

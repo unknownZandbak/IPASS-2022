@@ -13,19 +13,34 @@ class TestRuleChecking(unittest.TestCase):
         self.assertEqual(main.rule_checker(matrix)[0], 2)
 
     def test_rule2_1(self):
-        matrix = np.array(([0,0,1,0],[0,1,0,1],[1,1,0,0],[0,0,1,0]))
+        matrix = np.array(([1,1,0,1,0,0],[1,0,0,1,1,0],[0,1,1,0,1,1],[1,0,1,1,0,0],[0,1,0,1,0,1],[0,0,1,0,1,1]))
         self.assertEqual(main.rule_checker(matrix)[0], 3)
     
     def test_rule2_2(self):
-        matrix = np.array(([1,1,0,1],[0,0,1,0],[0,0,1,1],[1,1,0,0]))
+        matrix = np.array(( [5641,  6854, 1,    1,    6784, 5411],
+                            [9851,  1515, 8545, 1,    0,    0   ],
+                            [3248,  5145, 2187, 0,    6787, 0   ],
+                            [2414,  8753, 4879, 1,    9548, 2166],
+                            [6854,  0,    6874, 1,    1,    6156],
+                            [7797,  0,    4187, 0,    8756, 4578]))
         self.assertEqual(main.rule_checker(matrix)[0], 4)
 
     def test_rule3_1(self):
-        matrix = np.array(([1,1,0,1,0,0],[1,0,0,1,1,0],[0,1,1,0,1,1],[1,0,1,1,0,0],[0,1,0,1,0,1],[0,0,1,0,1,1]))
+        matrix = np.array(( [1,     0,    1,    0,    0,    1   ],
+                            [9347,  1,    1,    7348, 7674, 0   ],
+                            [4097,  1,    0,    0,    1,    4172],
+                            [1,     0,    1,    0,    0,    1   ],
+                            [8086,  0,    6349, 8150, 6485, 7668],
+                            [7072,  1,    0,    1,    1,    0   ]))
         self.assertEqual(main.rule_checker(matrix)[0], 5)
     
     def test_rule3_2(self):
-        matrix = np.array(([5641,6854,1,1,6784,5411],[9851,1515,8545,1,0,0],[3248,5145,2187,0,67874,0],[2414,8753,4879,1,9548,2166],[6854,0,6874,1,1,6156],[7797,0,4187,0,8756,45478]))
+        matrix = np.array(( [1,     0,    0,    1,    0,    1   ],
+                            [9347,  0,    1,    7348, 0,    0   ],
+                            [4097,  1,    0,    0,    1,    4172],
+                            [7659,  1,    2712, 9615, 1,    7012],
+                            [8086,  0,    6349, 8150, 0,    7668],
+                            [7072,  1,    0,    1,    1,    0   ]))
         self.assertEqual(main.rule_checker(matrix)[0], 6)
 
 class TestMatrixEditing(unittest.TestCase):

@@ -17,7 +17,7 @@ def generate_matrix(size: int) -> list:
         # matrix[:] = np.nan
         matrix = np.random.randint(1000, 9999, size=shape)
         # set the pre-set vallues amount, in this case its 20% of the matrix rounded down.
-        rnd_amount = int(np.floor((len(matrix)**2)*.3))
+        rnd_amount = int(np.floor((len(matrix)**2)*.35))
         # A list of permanent value positions that are not allowed to be changed 
         permlist = []
         
@@ -110,7 +110,7 @@ def bruteforce(matrix: np.array) -> None:
         if rule_checker(matrix)[0] == 0:
             print(f"======\nmatch found:\n{matrix}\n")
 
-def editGrid(matrixpak, pos=None, newVal=None) -> np.array:
+def editGrid(matrix_pak, pos=None, newVal=None) -> np.array:
     if pos == None:
         r = int(input("\nSelect Row: "))
         c = int(input("Select Column: "))
@@ -119,7 +119,7 @@ def editGrid(matrixpak, pos=None, newVal=None) -> np.array:
     if newVal == None:
         newVal = int(input("New Value: "))
 
-    matrix, permList = matrixpak
+    matrix, permList = matrix_pak
     if newVal != 1 and newVal != 0:
         return matrix, "Incorrect input value"
     else:
@@ -134,27 +134,65 @@ def editGrid(matrixpak, pos=None, newVal=None) -> np.array:
 
         return matrix, "Value changed correctly"
 
-def Constraint_propagations(matrix: np.array) -> np.array:
+def Constraint_propagations(matrix_pak: np.array) -> np.array:
+    matrix, permList = matrix_pak
     changes = 1
     while changes:
         changes = 0
 
         # Constraint 1
         for row in range(len(matrix)):
-            for i in range(0, len(matrix)-1):
-                if (matrix[row,i-1] != 1 and matrix[row,i-1] != 0) or (matrix[row,i] != 1 and matrix[row,i] != 0) or (matrix[row,i+1] != 1 and matrix[row,i+1] != 0):
-                    # Fill Row
-                    pass
-                if (matrix.T[row,i-1] != 1 and matrix.T[row,i-1] != 0) or (matrix.T[row,i] != 1 and matrix.T[row,i] != 0) or (matrix.T[row,i+1] != 1 and matrix.T[row,i+1] != 0):
-                    # Fill Column
-                    pass
+            for i in range(1, len(matrix)-1):
+                # Find combination of contraint satisfaction
+                # Fill Row
+                if (matrix[row,i-1] == matrix[row,i]) and (matrix[row,i+1] != 1 and matrix[row,i+1] != 0):
+                    new_matrix = editGrid(matrix_pak,(row,i+1), 0)[0]
+                    if rule_checker(new_matrix)[0] == 0: matrix = new_matrix
+                    else: matrix = editGrid(matrix_pak,(row,i+1), 1)[0]
+                    changes = 1
+
+                elif (matrix[row,i-1] == matrix[row,i+1]) and (matrix[row,i] != 1 and matrix[row,i] != 0):
+                    new_matrix = editGrid(matrix_pak,(row,i), 0)[0]
+                    if rule_checker(new_matrix)[0] == 0: matrix = new_matrix
+                    else: matrix = editGrid(matrix_pak,(row,i), 1)[0]
+                    changes = 1
+ 
+                elif (matrix[row,i] == matrix[row,i+1]) and (matrix[row,i-1] != 1 and matrix[row,i-1] != 0):
+                    new_matrix = editGrid(matrix_pak,(row,i-1), 0)[0]
+                    if rule_checker(new_matrix)[0] == 0: matrix = new_matrix
+                    else: matrix = editGrid(matrix_pak,(row,i-1), 1)[0]
+                    changes = 1
+
+                # Fill Column
+                if (matrix[i-1,row] == matrix[i,row]) and (matrix[i+1,row] != 1 and matrix[i+1,row] != 0):
+                    new_matrix = editGrid(matrix_pak,(i+1,row), 0)[0]
+                    if rule_checker(new_matrix)[0] == 0: matrix = new_matrix
+                    else: matrix = editGrid(matrix_pak,(i+1,row), 1)[0]
+                    changes = 1
+
+                elif (matrix[i-1,row] == matrix[i+1,row]) and (matrix[i,row] != 1 and matrix[i,row] != 0):
+                    new_matrix = editGrid(matrix_pak,(i,row), 0)[0]
+                    if rule_checker(new_matrix)[0] == 0: matrix = new_matrix
+                    else: matrix = editGrid(matrix_pak,(i,row), 1)[0]
+                    changes = 1
+ 
+                elif (matrix[i,row] == matrix[i+1,row]) and (matrix[i-1,row] != 1 and matrix[i-1,row] != 0):
+                    new_matrix = editGrid(matrix_pak,(i-1,row), 0)[0]
+                    if rule_checker(new_matrix)[0] == 0: matrix = new_matrix
+                    else: matrix = editGrid(matrix_pak,(i-1,row), 1)[0]
+                    changes = 1
+
+        # Constraint 2
+
+    return matrix, permList
+
 
 
 if __name__ == '__main__' :
 
-    mpak = generate_matrix(4)
+    mpak = generate_matrix(6)
     
-    mpak[0], message = Constraint_propagations(mpak[0])
+    Constraint_propagations(mpak[0])
 
     print(mpak[0])
 

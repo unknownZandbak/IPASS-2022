@@ -1,5 +1,6 @@
 import numpy as np
 import itertools as it
+from solver import Constraint_propagations, Backtrack_Based_Search
 
 def generate_matrix(size: int) -> list:
     """Generate a randomly filed  matrix of the given size
@@ -17,7 +18,7 @@ def generate_matrix(size: int) -> list:
         # matrix[:] = np.nan
         matrix = np.random.randint(1000, 9999, size=shape)
         # set the pre-set vallues amount, in this case its 20% of the matrix rounded down.
-        rnd_amount = int(np.floor((len(matrix)**2)*.35))
+        rnd_amount = int(np.floor((len(matrix)**2)*.0))
         # A list of permanent value positions that are not allowed to be changed 
         permlist = []
         
@@ -134,67 +135,11 @@ def editGrid(matrix_pak, pos=None, newVal=None) -> np.array:
 
         return matrix, "Value changed correctly"
 
-def Constraint_propagations(matrix_pak: np.array) -> np.array:
-    matrix, permList = matrix_pak
-    changes = 1
-    while changes:
-        changes = 0
-
-        # Constraint 1
-        for row in range(len(matrix)):
-            for i in range(1, len(matrix)-1):
-                # Find combination of contraint satisfaction
-                # Fill Row
-                if (matrix[row,i-1] == matrix[row,i]) and (matrix[row,i+1] != 1 and matrix[row,i+1] != 0):
-                    new_matrix = editGrid(matrix_pak,(row,i+1), 0)[0]
-                    if rule_checker(new_matrix)[0] == 0: matrix = new_matrix
-                    else: matrix = editGrid(matrix_pak,(row,i+1), 1)[0]
-                    changes = 1
-
-                elif (matrix[row,i-1] == matrix[row,i+1]) and (matrix[row,i] != 1 and matrix[row,i] != 0):
-                    new_matrix = editGrid(matrix_pak,(row,i), 0)[0]
-                    if rule_checker(new_matrix)[0] == 0: matrix = new_matrix
-                    else: matrix = editGrid(matrix_pak,(row,i), 1)[0]
-                    changes = 1
- 
-                elif (matrix[row,i] == matrix[row,i+1]) and (matrix[row,i-1] != 1 and matrix[row,i-1] != 0):
-                    new_matrix = editGrid(matrix_pak,(row,i-1), 0)[0]
-                    if rule_checker(new_matrix)[0] == 0: matrix = new_matrix
-                    else: matrix = editGrid(matrix_pak,(row,i-1), 1)[0]
-                    changes = 1
-
-                # Fill Column
-                if (matrix[i-1,row] == matrix[i,row]) and (matrix[i+1,row] != 1 and matrix[i+1,row] != 0):
-                    new_matrix = editGrid(matrix_pak,(i+1,row), 0)[0]
-                    if rule_checker(new_matrix)[0] == 0: matrix = new_matrix
-                    else: matrix = editGrid(matrix_pak,(i+1,row), 1)[0]
-                    changes = 1
-
-                elif (matrix[i-1,row] == matrix[i+1,row]) and (matrix[i,row] != 1 and matrix[i,row] != 0):
-                    new_matrix = editGrid(matrix_pak,(i,row), 0)[0]
-                    if rule_checker(new_matrix)[0] == 0: matrix = new_matrix
-                    else: matrix = editGrid(matrix_pak,(i,row), 1)[0]
-                    changes = 1
- 
-                elif (matrix[i,row] == matrix[i+1,row]) and (matrix[i-1,row] != 1 and matrix[i-1,row] != 0):
-                    new_matrix = editGrid(matrix_pak,(i-1,row), 0)[0]
-                    if rule_checker(new_matrix)[0] == 0: matrix = new_matrix
-                    else: matrix = editGrid(matrix_pak,(i-1,row), 1)[0]
-                    changes = 1
-
-        # Constraint 2
-
-        # Constraint 3
-
-    return matrix, permList
-
-
-
 if __name__ == '__main__' :
 
     mpak = generate_matrix(6)
     
-    Constraint_propagations(mpak[0])
+    mpak = Backtrack_Based_Search(mpak)
 
     print(mpak[0])
 

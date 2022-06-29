@@ -18,7 +18,7 @@ def generate_matrix(size: int) -> list:
         # matrix[:] = np.nan
         matrix = np.random.randint(1000, 9999, size=shape)
         # set the pre-set vallues amount, in this case its 20% of the matrix rounded down.
-        rnd_amount = int(np.floor((len(matrix)**2)*.0))
+        rnd_amount = int(np.floor((len(matrix)**2)*.3))
         # A list of permanent value positions that are not allowed to be changed 
         permlist = []
         
@@ -137,9 +137,9 @@ def editGrid(matrix_pak, pos=None, newVal=None) -> np.array:
 
 if __name__ == '__main__' :
 
-    mpak = generate_matrix(6)
+    mpak = generate_matrix(4)
     
-    mpak = Backtrack_Based_Search(mpak)
+    mpak = Backtrack_Based_Search(mpak[0])
 
     print(mpak[0])
 

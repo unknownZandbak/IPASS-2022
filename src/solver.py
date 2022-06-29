@@ -5,27 +5,27 @@ def Backtrack_Based_Search(matrix, pos=None, new_val=None):
     if pos != None and new_val != None:
         print(pos, new_val)
         matrix[pos[0], pos[1]] = new_val
-    new_matrix = Constraint_propagations(matrix)
-    print(new_matrix)
+    matrix = Constraint_propagations(matrix)
+    print(matrix)
     print("==========")
 
-    if rule_checker(new_matrix)[0] != 0:
-        return matrix
+    if rule_checker(matrix)[0] != 0:
+        return
 
     else:
         # Check if there are nomore empty cells 
         # Then return out of the function and return the solved matrix
-        if ((new_matrix != 0) & (new_matrix != 1)).sum() == 0: 
+        if ((matrix != 0) & (matrix != 1)).sum() == 0: 
             # print(matrix)
-            return new_matrix
+            return matrix
 
         # Else we take a random empty cell and fill it
         else:
-            tmp_val = np.random.choice(new_matrix[(new_matrix != 0) & (new_matrix != 1)])
-            x, y = np.where(new_matrix == tmp_val)
+            tmp_val = np.random.choice(matrix[(matrix != 0) & (matrix != 1)])
+            x, y = np.where(matrix == tmp_val)
             pos = int(x), int(y)
-            Backtrack_Based_Search(new_matrix, pos, 0)
-            Backtrack_Based_Search(new_matrix, pos, 1)
+            Backtrack_Based_Search(matrix, pos, 0)
+            Backtrack_Based_Search(matrix, pos, 1)
 
 def Constraint_propagations(matrix: np.array) -> np.array:
 

@@ -1,5 +1,5 @@
 # IPASS-2022
-
+Github repo: <https://github.com/unknownZandbak/IPASS-2022>
 In deze git repo wordt alle bestanden voor mijn IPASS van 2022 geplaatst.
 
 ## Het Project
@@ -24,7 +24,7 @@ We hebben oon een paar regels waar we ons aan moeten houden bioj het invullen va
 
 - Constrain 2
     \
-    Elke rij en kolom moeten een even veel grote hoeveelheid aan `1` en `0` bevaten. 
+    Elke rij en kolom moeten een even veel grote hoeveelheid aan `1` en `0` bevaten.
 
 - Constrain 3
   \

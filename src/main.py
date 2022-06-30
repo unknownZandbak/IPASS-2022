@@ -112,6 +112,16 @@ def bruteforce(matrix: np.array) -> None:
             print(f"======\nmatch found:\n{matrix}\n")
 
 def editGrid(matrix_pak, pos=None, newVal=None) -> np.array:
+    """Manualy edit the grid, meant to be use by the user with a input field
+
+    Args:
+        matrix_pak (_type_): matrix pakage
+        pos (_type_, optional): position of changing value. Defaults to None.
+        newVal (_type_, optional): new value to change cell to . Defaults to None.
+
+    Returns:
+        np.array: _description_
+    """
     if pos == None:
         r = int(input("\nSelect Row: "))
         c = int(input("Select Column: "))

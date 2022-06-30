@@ -4,12 +4,10 @@ In deze git repo wordt alle bestanden voor mijn IPASS van 2022 geplaatst.
 
 ## Het Project
 
-***
 In dit project is het doel om een ai te maken die een binaire puzzel kan oplossen, door een bestaand algoritme hiervoor te implementeren.
 
 ## Binaire puzzels
 
-***
 Moch je nog nooit van een binaire puzzel gehoord hebben, of vergeten wat het ook alweer precies zijn dan ga zal ik het nog even uitleggen.
 
 Een binaire puzzel is heel erg verglijk baar met een sudoku puzzel. Het zijn allebij grids(matrixen) altijd vierkant en moeten ingevuld worden met getallen.
@@ -37,7 +35,6 @@ Een opgeloste puzzel zou er dan als vervold uit kunnen zien.\
 
 ## Algoritme
 
-***
 Voor het algoritme ga ik gebruik maken van het `Backtrack_Based_Search` algoritme om schreven in de onderstaande paper.
 
 ><https://www.researchgate.net/journal/Mathematics-in-Computer-Science-1661-8289/publication/317104134_Solving_a_Binary_Puzzle/links/5fc1aed592851c933f69c1ef/Solving-a-Binary-Puzzle.pdf>

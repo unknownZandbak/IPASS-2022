@@ -1,10 +1,21 @@
 import numpy as np
 
-def Backtrack_Based_Search(matrix, pos=None, new_val=None):
+def Backtrack_Based_Search(matrix, pos=None, new_val=None) -> np.array:
+    """This function acts as a parent to teh Constraint Propagation function and togheter form the solving algorithm.
+
+    Args:
+        matrix (_type_): matrix we want solved
+        pos (_type_, optional): random empty location in the matrix (The function will fill this by itself when recursion happens). Defaults to None.
+        new_val (_type_, optional): random value either 1 or 0 (The function will fill this by itself when recursion happens). Defaults to None.
+
+    Returns:
+        np.array: Returns a solved matrix
+    """
     # fill a empty cell and start the propagation again.
     if pos != None and new_val != None:
         print(pos, new_val)
         matrix[pos[0], pos[1]] = new_val
+
     new_matrix = Constraint_propagations(matrix)
     print(new_matrix)
     print("==========")
@@ -28,6 +39,14 @@ def Backtrack_Based_Search(matrix, pos=None, new_val=None):
             Backtrack_Based_Search(new_matrix, pos, 1)
 
 def Constraint_propagations(matrix: np.array) -> np.array:
+    """Big function to go trough the matrix find all possible constraints it can find and fill them accordingly
+        it does this until it cant find any more constraints and then returns its last generated matrix.
+    Args:
+        matrix (np.array): Given matrix
+
+    Returns:
+        np.array: Return more filed matrix
+    """
 
     changes = 1
     while changes:

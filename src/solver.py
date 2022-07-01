@@ -80,19 +80,19 @@ def Constraint_propagations(matrix: np.array) -> np.array:
                 # Iterate Columns
                 if ((matrix.T[row] != 0) & (matrix.T[row] != 1)).sum() > 0: # Check if there are any empty cells
                     if (matrix[i-1,row] == matrix[i,row]) and (matrix[i+1,row] != 1 and matrix[i+1,row] != 0):
-                        matrix[row,i+1] = 0
+                        matrix[i+1, row] = 0
                         if rule_checker(matrix)[0] == 0: pass
                         else: matrix[row,i+1] = 1
                         changes = 1
 
                     elif (matrix[i-1,row] == matrix[i+1,row]) and (matrix[i,row] != 1 and matrix[i,row] != 0):
-                        matrix[row,i] = 0
+                        matrix[i, row] = 0
                         if rule_checker(matrix)[0] == 0: pass
                         else: matrix[row,i] = 1
                         changes = 1
     
                     elif (matrix[i,row] == matrix[i+1,row]) and (matrix[i-1,row] != 1 and matrix[i-1,row] != 0):
-                        matrix[row,i-1] = 0
+                        matrix[i-1, row] = 0
                         if rule_checker(matrix)[0] == 0: pass
                         else: matrix[row,i-1] = 1
                         changes = 1

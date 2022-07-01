@@ -1,8 +1,8 @@
 import numpy as np
 import itertools as it
-from solver import Constraint_propagations, Backtrack_Based_Search
+from solver import solve
 
-def generate_matrix(size: int) -> list: # Deprecated
+def generate_matrix(size: int) -> list: #! Deprecated use the new_generation_matrix function
     """(Deprecated use the new_generation_matrix function)
     Generate a randomly filed  matrix of the given size
     Matrix will always be a square
@@ -122,8 +122,8 @@ def rule_checker(matrix: np.array) -> tuple:
     # * if nothing is triggered then it would mean all rules are followed.
     return 0, "No conflicting rules"
 
-def bruteforce(matrix: np.array) -> None:
-    """Generates all possible matrices that follow the rules in the given matrix shape.
+def bruteforce(matrix: np.array) -> None: #! Dangerous Code Don't use
+    """(Dangerous Code Don't use)Generates all possible matrices that follow the rules in the given matrix shape.
     Note 4x4 is easily doable but if you go to 6x6 then it will take a long time.
 
     Args:

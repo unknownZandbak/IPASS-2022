@@ -19,7 +19,7 @@ def generate_matrix(size: int) -> list: #! Deprecated use the new_generation_mat
         # matrix[:] = np.nan
         matrix = np.random.randint(1000, 9999, size=shape)
         # set the pre-set vallues amount, in this case its 20% of the matrix rounded down.
-        rnd_amount = int(np.floor((len(matrix)**2)*.3))
+        rnd_amount = int(np.floor((len(matrix)**2)*.0))
         # A list of permanent value positions that are not allowed to be changed 
         permlist = []
         
@@ -44,12 +44,10 @@ def new_generate_matrix(size: int):
         list: returns a 2d numpy array wich acts as the matrix, and a accompanying list of imutable cell positions.
     """
     shape = size, size
-    matrix = np.random.randint(1000, 9999, size=shape)
-
     # First force the program to make a correct puzzle
-    while (rule_checker(matrix)[0] != 0) or (((matrix != 0) & (matrix != 1)).sum() != 0):
-        matrix = np.random.randint(1000, 9999, size=shape)
-        matrix = Backtrack_Based_Search(matrix)
+    # while (rule_checker(matrix)[0] != 0) or (((matrix != 0) & (matrix != 1)).sum() != 0):
+    matrix = np.random.randint(1000, 9999, size=shape)
+    matrix = solve(matrix)
     
     # fille the matrix randomly with random numbers
     rnd_amount = int(np.floor((len(matrix)**2)*.95))
@@ -172,12 +170,23 @@ def editGrid(matrix_pak, pos=None, newVal=None) -> np.array:
 
         return matrix, "Value changed correctly"
 
+
 if __name__ == '__main__' :
 
-    mpak = generate_matrix(4)
-    
-    solved_matrix = Backtrack_Based_Search(mpak[0])
-    print("Solved Matrix:")
-    print(solved_matrix)
+    input_size = int(input("Size of Puzzle: "))
+    print("Generating Puzzle")
+    matrix = new_generate_matrix(input_size)
+    print(f"Generated Puzzle:\n{matrix}")
+    print("Solving Puzzle")
+    matrix = solve(matrix)
+    print(f"=====\nSolved Matrix:\n{matrix}")
+    # mpak = generate_matrix(6)
+    # print("Generated matrix")
+    # print(mpak[0])
+
+    # solved_matrix = Backtrack_Based_Search(mpak[0])
+
+    # print("Solved Matrix:")
+    # print(solved_matrix)
 
     

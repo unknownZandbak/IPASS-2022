@@ -34,9 +34,10 @@ def Backtrack_Based_Search(matrix, pos=None, new_val=None) -> np.array:
         else:
             tmp_val = np.random.choice(new_matrix[(new_matrix != 0) & (new_matrix != 1)])
             x, y = np.where(new_matrix == tmp_val)
-            pos = int(x), int(y)
-            Backtrack_Based_Search(new_matrix, pos, 0)
-            Backtrack_Based_Search(new_matrix, pos, 1)
+            try:
+                pos = int(x), int(y)
+            except TypeError:
+                pos = int(x[0]), int(y[0])
 
 def Constraint_propagations(matrix: np.array) -> np.array:
     """Big function to go trough the matrix find all possible constraints it can find and fill them accordingly

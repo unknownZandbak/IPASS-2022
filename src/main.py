@@ -2,8 +2,9 @@ import numpy as np
 import itertools as it
 from solver import Constraint_propagations, Backtrack_Based_Search
 
-def generate_matrix(size: int) -> list:
-    """Generate a randomly filed  matrix of the given size
+def generate_matrix(size: int) -> list: # Deprecated
+    """(Deprecated use the new_generation_matrix function)
+    Generate a randomly filed  matrix of the given size
     Matrix will always be a square
     Args:
         size (int): Size of the wanted matrix e.g. 6 (6x6)
@@ -32,6 +33,32 @@ def generate_matrix(size: int) -> list:
 
         if rule_checker(matrix)[0] == 0:
             return [matrix, permlist]
+
+def new_generate_matrix(size: int):
+    """Generate a randomly filed  matrix of the given size,
+    Matrix will always be a square
+    Args:
+        size (int): Size of the wanted matrix e.g. 6 (6x6)
+
+    Returns:
+        list: returns a 2d numpy array wich acts as the matrix, and a accompanying list of imutable cell positions.
+    """
+    shape = size, size
+    matrix = np.random.randint(1000, 9999, size=shape)
+
+    # First force the program to make a correct puzzle
+    while (rule_checker(matrix)[0] != 0) or (((matrix != 0) & (matrix != 1)).sum() != 0):
+        matrix = np.random.randint(1000, 9999, size=shape)
+        matrix = Backtrack_Based_Search(matrix)
+    
+    # fille the matrix randomly with random numbers
+    rnd_amount = int(np.floor((len(matrix)**2)*.95))
+    for step in range(rnd_amount):
+        row = np.random.randint(0, len(matrix))
+        column = np.random.randint(0, len(matrix.T))
+        matrix[row, column] = np.random.randint(1000, 10000)
+
+    return matrix
 
 def rule_checker(matrix: np.array) -> tuple:
     """Check for any conflicting rules for the given matrix.

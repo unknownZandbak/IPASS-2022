@@ -2,7 +2,7 @@ import numpy as np
 import itertools as it
 from solver import solve
 
-def generate_matrix(size: int) -> list: #! Deprecated use the new_generation_matrix function
+def generate_matrix(size: int) -> list: #! Deprecated use the new_generation_matrix function 
     """(Deprecated use the new_generation_matrix function)
     Generate a randomly filed  matrix of the given size
     Matrix will always be a square
@@ -170,23 +170,45 @@ def editGrid(matrix_pak, pos=None, newVal=None) -> np.array:
 
         return matrix, "Value changed correctly"
 
+def manual_play(matrix: np.array):
+    while (rule_checker(matrix)[0] != 0) or (((matrix != 0) & (matrix != 1)).sum() != 0):
+        print(f"Puzzle: {matrix}")
+        matrix = editGrid((matrix, ()))[0]
 
-if __name__ == '__main__' :
+    print(f"Well done, U solved the puzzle :\n {matrix}")
 
-    input_size = int(input("Size of Puzzle: "))
+def game_loop():
+
+    input_size = 6
     print("Generating Puzzle")
     matrix = new_generate_matrix(input_size)
     print(f"Generated Puzzle:\n{matrix}")
-    print("Solving Puzzle")
-    matrix = solve(matrix)
-    print(f"=====\nSolved Matrix:\n{matrix}")
-    # mpak = generate_matrix(6)
-    # print("Generated matrix")
-    # print(mpak[0])
 
-    # solved_matrix = Backtrack_Based_Search(mpak[0])
+    while 1:
+        print("""
+Choose one of the following Options:
+N - Generate a new Puzzle
+M - Manual Mode (manually fill in the puzzle)
+A - Automated Mode (Let the programe itself solve the puzzle)
+Q - Quit the programm
+""")
+        anwser = input(":: ")
 
-    # print("Solved Matrix:")
-    # print(solved_matrix)
+        if anwser == "N" or  anwser == "n":
+            input_size = int(input("Size of Puzzle: "))
+            print("Generating Puzzle")
+            matrix = new_generate_matrix(input_size)
+            print(f"Generated Puzzle:\n{matrix}")
+    
+        elif anwser == "M" or anwser == "m": manual_play(matrix)
+        elif anwser == "A" or anwser == "a": 
+            print("Solving Puzzle")
+            solved_matrix = solve(matrix)
+            print(f"\n=====\nSolved Matrix:\n{solved_matrix}")
+        elif anwser == "Q" or anwser == "q": break
 
+
+if __name__ == '__main__' :
+    
+    game_loop()
     

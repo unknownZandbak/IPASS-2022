@@ -1,11 +1,21 @@
 import numpy as np
 from copy import deepcopy
 
-def solve(matrix) -> np.array:
+def solve(matrix: np.array) -> np.array:
+    """Take the given binary puzzle and return the solved Version 
+
+    Args:
+        matrix (_type_): The binairy puzzle
+
+    Returns:
+        np.array: A solved version of the binairy puzzle
+    """
     copy_matrix = deepcopy(matrix)
+
     while (rule_checker(matrix)[0] != 0) or (((matrix != 0) & (matrix != 1)).sum() != 0):
         matrix = deepcopy(copy_matrix)
         matrix = Backtrack_Based_Search(matrix)
+
     return matrix
 
 def Backtrack_Based_Search(matrix, pos=None, new_val=None) -> np.array:

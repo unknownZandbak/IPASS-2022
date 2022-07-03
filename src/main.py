@@ -180,12 +180,13 @@ def manual_play(matrix: np.array):
 def game_loop():
 
     input_size = 6
-    print("Generating Puzzle")
+    print("\nGenerating Puzzle")
     matrix = new_generate_matrix(input_size)
     print(f"Generated Puzzle:\n{matrix}")
 
     while 1:
         print("""
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 Choose one of the following Options:
 N - Generate a new Puzzle
 M - Manual Mode (manually fill in the puzzle)

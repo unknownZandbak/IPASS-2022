@@ -1,9 +1,10 @@
 import numpy as np
 import itertools as it
-from solver import Constraint_propagations, Backtrack_Based_Search
+from solver import solve
 
-def generate_matrix(size: int) -> list:
-    """Generate a randomly filed  matrix of the given size
+def generate_matrix(size: int) -> list: #! Deprecated use the new_generation_matrix function 
+    """(Deprecated use the new_generation_matrix function)
+    Generate a randomly filed  matrix of the given size
     Matrix will always be a square
     Args:
         size (int): Size of the wanted matrix e.g. 6 (6x6)
@@ -18,7 +19,7 @@ def generate_matrix(size: int) -> list:
         # matrix[:] = np.nan
         matrix = np.random.randint(1000, 9999, size=shape)
         # set the pre-set vallues amount, in this case its 20% of the matrix rounded down.
-        rnd_amount = int(np.floor((len(matrix)**2)*.3))
+        rnd_amount = int(np.floor((len(matrix)**2)*.0))
         # A list of permanent value positions that are not allowed to be changed 
         permlist = []
         
@@ -32,6 +33,30 @@ def generate_matrix(size: int) -> list:
 
         if rule_checker(matrix)[0] == 0:
             return [matrix, permlist]
+
+def new_generate_matrix(size: int):
+    """Generate a randomly filed  matrix of the given size,
+    Matrix will always be a square
+    Args:
+        size (int): Size of the wanted matrix e.g. 6 (6x6)
+
+    Returns:
+        list: returns a 2d numpy array wich acts as the matrix, and a accompanying list of imutable cell positions.
+    """
+    shape = size, size
+    # First force the program to make a correct puzzle
+    # while (rule_checker(matrix)[0] != 0) or (((matrix != 0) & (matrix != 1)).sum() != 0):
+    matrix = np.random.randint(1000, 9999, size=shape)
+    matrix = solve(matrix)
+    
+    # fille the matrix randomly with random numbers
+    rnd_amount = int(np.floor((len(matrix)**2)*.95))
+    for step in range(rnd_amount):
+        row = np.random.randint(0, len(matrix))
+        column = np.random.randint(0, len(matrix.T))
+        matrix[row, column] = np.random.randint(1000, 10000)
+
+    return matrix
 
 def rule_checker(matrix: np.array) -> tuple:
     """Check for any conflicting rules for the given matrix.
@@ -95,8 +120,8 @@ def rule_checker(matrix: np.array) -> tuple:
     # * if nothing is triggered then it would mean all rules are followed.
     return 0, "No conflicting rules"
 
-def bruteforce(matrix: np.array) -> None:
-    """Generates all possible matrices that follow the rules in the given matrix shape.
+def bruteforce(matrix: np.array) -> None: #! Dangerous Code Don't use
+    """(Dangerous Code Don't use)Generates all possible matrices that follow the rules in the given matrix shape.
     Note 4x4 is easily doable but if you go to 6x6 then it will take a long time.
 
     Args:
@@ -145,12 +170,45 @@ def editGrid(matrix_pak, pos=None, newVal=None) -> np.array:
 
         return matrix, "Value changed correctly"
 
-if __name__ == '__main__' :
+def manual_play(matrix: np.array):
+    while (rule_checker(matrix)[0] != 0) or (((matrix != 0) & (matrix != 1)).sum() != 0):
+        print(f"Puzzle: {matrix}")
+        matrix = editGrid((matrix, ()))[0]
 
-    mpak = generate_matrix(4)
+    print(f"Well done, U solved the puzzle :\n {matrix}")
+
+def game_loop():
+
+    input_size = 6
+    print("Generating Puzzle")
+    matrix = new_generate_matrix(input_size)
+    print(f"Generated Puzzle:\n{matrix}")
+
+    while 1:
+        print("""
+Choose one of the following Options:
+N - Generate a new Puzzle
+M - Manual Mode (manually fill in the puzzle)
+A - Automated Mode (Let the programe itself solve the puzzle)
+Q - Quit the programm
+""")
+        anwser = input(":: ")
+
+        if anwser == "N" or  anwser == "n":
+            input_size = int(input("Size of Puzzle: "))
+            print("Generating Puzzle")
+            matrix = new_generate_matrix(input_size)
+            print(f"Generated Puzzle:\n{matrix}")
     
-    solved_matrix = Backtrack_Based_Search(mpak[0])
-    print("Solved Matrix:")
-    print(solved_matrix)
+        elif anwser == "M" or anwser == "m": manual_play(matrix)
+        elif anwser == "A" or anwser == "a": 
+            print("Solving Puzzle")
+            solved_matrix = solve(matrix)
+            print(f"\n=====\nSolved Matrix:\n{solved_matrix}")
+        elif anwser == "Q" or anwser == "q": break
 
+
+if __name__ == '__main__' :
+    
+    game_loop()
     

@@ -1,4 +1,5 @@
 # IPASS-2022
+
 Github repo: <https://github.com/unknownZandbak/IPASS-2022>
 
 In deze git repo wordt alle bestanden voor mijn IPASS van 2022 geplaatst.
@@ -45,12 +46,12 @@ In de paper wordt dit algoritme in 2 verschillende pseudo code delen getoond, He
     Algorithm 1: Solve(B,i, j, v)
     Input: An n × n binary puzzle B, positive integers i, j with 1 ≤ i, j ≤ n, and v ∈ {0, 1}.
     1 B[i][j] ← v
-    2 B	 ← ConstraintPropagation(B)
-    3 if contradiction occur in B	 then
+    2 B ← ConstraintPropagation(B)
+    3 if contradiction occur in B then
     4    return
     5 else
-    6    if B	 has no empty cell then
-    7       print B	
+    6    if B has no empty cell then
+    7       print B
     8       return
     9    else
     10      Randomly choose x, y (1 ≤ x, y ≤ n) such that B[x][y] is an empty cell.
